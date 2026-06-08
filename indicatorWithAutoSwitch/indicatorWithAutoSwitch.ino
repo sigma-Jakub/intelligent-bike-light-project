@@ -1,0 +1,91 @@
+#include <Adafruit_NeoPixel.h>
+#ifdef __AVR__
+ #include <avr/power.h>
+#endif
+
+#define BUTTON_PIN 5
+#define PIXEL_PIN_LEFT 3
+#define PIXEL_COUNT 8
+
+Adafruit_NeoPixel stripL(PIXEL_COUNT, PIXEL_PIN_LEFT, NEO_GRB + NEO_KHZ800);
+
+boolean oldState = HIGH;
+
+unsigned long lastDebounceTime = 0; 
+unsigned long debounceDelay = 20; //Ignore any button changes for 20 ms
+unsigned long lastSwitchTime = 0; 
+
+bool blinking = false;
+unsigned long blinkTimer = 0;
+unsigned long timeBetween  = 1000; // 1 second per step
+int mode = 0;
+
+
+void setup() {
+  pinMode(BUTTON_PIN, INPUT_PULLUP);
+  stripL.begin();
+  stripL.show();
+  stripL.setBrightness(50);
+}
+
+void loop() {
+  boolean newState = digitalRead(BUTTON_PIN);
+
+  if ((newState == LOW) && (oldState == HIGH)) {
+    lastDebounceTime = millis();
+  }
+
+  if ((millis() - lastDebounceTime) > debounceDelay) { // ensures button press doesn't intefere 
+    newState = digitalRead(BUTTON_PIN);
+
+    if (newState == LOW && (millis() - lastSwitchTime) > 300) {
+      lastSwitchTime = millis();
+
+      // Start blinking sequence
+      blinking = true;
+      mode = 0;
+      blinkTimer = millis();
+    }
+  }
+
+  oldState = newState;
+
+  if (blinking) {
+    if (millis() - blinkTimer >= timeBetween) {
+      blinkTimer = millis();
+
+      switch (mode) {
+        case 0:
+          colorWipe(stripL.Color(0, 0, 255), 10);
+          colorWipe(stripL.Color(0, 0, 0), 10);;
+          break;
+
+        case 1:
+          colorWipe(stripL.Color(0, 0, 255), 10);
+          colorWipe(stripL.Color(0, 0, 0), 10);;
+          break;
+
+        case 2:
+          colorWipe(stripL.Color(0, 0, 0), 10);
+          break;
+
+        case 3:
+          // Blinking finished
+          blinking = false;
+          stripL.clear();
+          stripL.show();
+          break;
+      }
+
+      mode++;
+    }
+  }
+}
+
+void colorWipe(uint32_t color, int wait) {
+  for (int i = 0; i < stripL.numPixels(); i++) {
+    stripL.setPixelColor(i, color);
+    stripL.show();
+    delay(wait);
+  }
+}
