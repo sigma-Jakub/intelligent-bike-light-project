@@ -25,7 +25,7 @@ void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   stripL.begin();
   stripL.show();
-  stripL.setBrightness(100);
+  stripL.setBrightness(50);
 }
 
 void loop() {
@@ -56,7 +56,7 @@ void loop() {
 
       switch (mode) {
         case 0:
-          colorWipe(stripL.Color(255, 50, 0), 10); //show
+          colorWipe(stripL.Color(255, 50, 0), 10); //show 1
           break;
 
         case 1:
@@ -64,7 +64,7 @@ void loop() {
           break;
 
         case 2:
-          colorWipe(stripL.Color(255, 50, 0), 10); //show
+          colorWipe(stripL.Color(255, 50, 0), 10); //show 2
           break;
 
         case 3:
@@ -72,7 +72,7 @@ void loop() {
           break;
         
         case 4:
-          colorWipe(stripL.Color(255, 50, 0), 10); //show
+          colorWipe(stripL.Color(255, 50, 0), 10); //show 3
           break;
 
         case 5:
@@ -80,10 +80,18 @@ void loop() {
           break;
         
         case 6:
-          colorWipe(stripL.Color(255, 50, 0), 10); //show
+          colorWipe(stripL.Color(255, 50, 0), 10); //show 4
           break; 
 
         case 7:
+          colorWipe(stripL.Color(0, 0, 0), 10); //blank
+          break;
+        
+        case 8:
+          colorWipe(stripL.Color(255, 50, 0), 10); //show 5
+          break; 
+
+        case 9:
           // Blinking finished
           blinking = false;
           stripL.clear();
