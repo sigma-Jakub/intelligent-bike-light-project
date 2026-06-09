@@ -38,7 +38,7 @@ The Intelligent Bike Light is an Arduino based safety system designed to enhance
 
 ## Additional Information
 
-* [PLACEHOLDER]
+* Meeting related files are kept on a group Teams application to ensure protection.
 
 ## Project Contributors
 
