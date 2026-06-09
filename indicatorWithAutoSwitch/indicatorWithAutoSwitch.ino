@@ -17,7 +17,7 @@ unsigned long lastSwitchTime = 0;
 
 bool blinking = false;
 unsigned long blinkTimer = 0;
-unsigned long timeBetween  = 1000; // 1 second per step
+unsigned long timeBetween  = 500; // 0.5 second per step
 int mode = 0;
 
 
@@ -25,7 +25,7 @@ void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   stripL.begin();
   stripL.show();
-  stripL.setBrightness(50);
+  stripL.setBrightness(100);
 }
 
 void loop() {
@@ -35,7 +35,7 @@ void loop() {
     lastDebounceTime = millis();
   }
 
-  if ((millis() - lastDebounceTime) > debounceDelay) { // ensures button press doesn't intefere 
+  if ((millis() - lastDebounceTime) > debounceDelay) { // ensures button press doesn't intefere
     newState = digitalRead(BUTTON_PIN);
 
     if (newState == LOW && (millis() - lastSwitchTime) > 300) {
@@ -56,20 +56,34 @@ void loop() {
 
       switch (mode) {
         case 0:
-          colorWipe(stripL.Color(0, 0, 255), 10);
-          colorWipe(stripL.Color(0, 0, 0), 10);;
+          colorWipe(stripL.Color(255, 50, 0), 10); //show
           break;
 
         case 1:
-          colorWipe(stripL.Color(0, 0, 255), 10);
-          colorWipe(stripL.Color(0, 0, 0), 10);;
+          colorWipe(stripL.Color(0, 0, 0), 10); //blank
           break;
 
         case 2:
-          colorWipe(stripL.Color(0, 0, 0), 10);
+          colorWipe(stripL.Color(255, 50, 0), 10); //show
           break;
 
         case 3:
+          colorWipe(stripL.Color(0, 0, 0), 10); //blank
+          break;
+        
+        case 4:
+          colorWipe(stripL.Color(255, 50, 0), 10); //show
+          break;
+
+        case 5:
+          colorWipe(stripL.Color(0, 0, 0), 10); //blank
+          break;
+        
+        case 6:
+          colorWipe(stripL.Color(255, 50, 0), 10); //show
+          break; 
+
+        case 7:
           // Blinking finished
           blinking = false;
           stripL.clear();
