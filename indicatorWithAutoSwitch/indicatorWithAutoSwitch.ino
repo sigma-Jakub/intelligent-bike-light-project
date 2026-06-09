@@ -30,7 +30,42 @@ void setup() {
 
 void loop() {
   readButton();
+  leftIndicator();
+  
+}
 
+void colorWipe(uint32_t color, int wait) {
+  for (int i = 0; i < stripL.numPixels(); i++) {
+    stripL.setPixelColor(i, color);
+    stripL.show();
+    delay(wait);
+  }
+}
+
+void readButton(){
+  boolean newState = digitalRead(BUTTON_PIN);
+
+  if ((newState == LOW) && (oldState == HIGH)) {
+    lastDebounceTime = millis();
+  }
+
+  if ((millis() - lastDebounceTime) > debounceDelay) { // ensures button press doesn't intefere
+    newState = digitalRead(BUTTON_PIN);
+
+    if (newState == LOW && (millis() - lastSwitchTime) > 300) {
+      lastSwitchTime = millis();
+
+      // Start blinking sequence
+      blinking = true;
+      mode = 0;
+      blinkTimer = millis();
+    }
+  }
+
+  oldState = newState;
+}
+
+void leftIndicator(){
   if (blinking) {
     if (millis() - blinkTimer >= timeBetween) {
       blinkTimer = millis();
@@ -83,35 +118,4 @@ void loop() {
       mode++;
     }
   }
-}
-
-void colorWipe(uint32_t color, int wait) {
-  for (int i = 0; i < stripL.numPixels(); i++) {
-    stripL.setPixelColor(i, color);
-    stripL.show();
-    delay(wait);
-  }
-}
-
-void readButton(){
-  boolean newState = digitalRead(BUTTON_PIN);
-
-  if ((newState == LOW) && (oldState == HIGH)) {
-    lastDebounceTime = millis();
-  }
-
-  if ((millis() - lastDebounceTime) > debounceDelay) { // ensures button press doesn't intefere
-    newState = digitalRead(BUTTON_PIN);
-
-    if (newState == LOW && (millis() - lastSwitchTime) > 300) {
-      lastSwitchTime = millis();
-
-      // Start blinking sequence
-      blinking = true;
-      mode = 0;
-      blinkTimer = millis();
-    }
-  }
-
-  oldState = newState;
 }
