@@ -25,7 +25,7 @@ void setup() {
   pinMode(BUTTON_PIN, INPUT_PULLUP);
   stripL.begin();
   stripL.show();
-  stripL.setBrightness(50);
+  stripL.setBrightness(100);
 }
 
 void loop() {
