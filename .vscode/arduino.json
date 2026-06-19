@@ -2,5 +2,5 @@
     "configuration": "cpu=atmega328old",
     "board": "arduino:avr:nano",
     "port": "COM5",
-    "sketch": "indicatorWithAutoSwitch\\indicatorWithAutoSwitch.ino"
+    "sketch": "smth\\smth.ino"
 }
